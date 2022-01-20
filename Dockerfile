@@ -1,5 +1,6 @@
 FROM buildpack-deps
 
+# Install the SDK.
 RUN set -x \
   && cd /tmp \
   && curl -fsSL -o installer.sh "https://github.com/webosbrew/meta-lg-webos-ndk/releases/download/1.0.g-rev.5/webos-sdk-x86_64-armv7a-neon-toolchain-1.0.g.sh" \
@@ -8,13 +9,17 @@ RUN set -x \
   && ./installer.sh -y \
   && rm installer.sh
 
+# Additional Debian packages.
 RUN set -x \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
-    nodejs \
-    npm \
+    # For use with hendrikmuhs/ccache-action
+    ccache \
+    # For ares-cli
+    nodejs npm \
   && rm -rf /var/lib/apt/lists/*
 
+# Install ares-cli.
 RUN set -x \
   && npm install -g @webosose/ares-cli \
   && rm -rf /root/.npm
