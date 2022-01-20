@@ -7,16 +7,15 @@ Docker image containing a preinstalled [webosbrew/meta-lg-webos-ndk] and
 docker run --rm -it ghcr.io/stephank/docker-lg-webos-ndk
 ```
 
-Inside the container, you still need to setup the NDK environment:
+Inside the container, the SDK environment is already setup, so there is no need
+to source the `environment-setup` file.
 
-```sh
-source /opt/webos-sdk-x86_64/1.0.g/environment-setup-armv7a-neon-webos-linux-gnueabi
-```
-
-You can, of course, also use this image as the base layer in your own
-Dockerfile using `FROM`. However, the same applies: in each `RUN`, you will
-have to source the environment setup script to do webOS builds.
+This image also adds a [ccache] hook to the SDK, injecting it in `CC`, `CXX`,
+and `CPP`. If you're using this image in GitHub Actions, it is recommended to
+add [hendrikmuhs/ccache-action] to your workflow.
 
 [webosbrew/meta-lg-webos-ndk]: https://github.com/webosbrew/meta-lg-webos-ndk
 [webosose/ares-cli]: https://github.com/webosose/ares-cli
 [buildpack-deps]: https://hub.docker.com/_/buildpack-deps
+[ccache]: https://ccache.dev
+[hendrikmuhs/ccache-action]: https://github.com/hendrikmuhs/ccache-action
